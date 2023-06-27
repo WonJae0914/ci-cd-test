@@ -45,7 +45,7 @@ public class ImplementerController {
 	public String applicationPage(HttpServletRequest request, Model model) {
 		
 		//current page
-		model.addAttribute("currentPage", "application");
+		model.addAttribute("currentPage", "application"); 
 
 		return "implementer/application/list";
 	}
