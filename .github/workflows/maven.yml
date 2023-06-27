@@ -1,0 +1,42 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI/CD with Maven and Tomcat
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        # GitHub Actions에서 레포지토리를 체크아웃하는 단계입니다.
+        
+      - name: Deploy to Tomcat
+        run: mv target/*.war /opt/tomcat/latest/webapps/
+
+      - name: Build with Maven
+        run: mvn -B package --file pom.xml
+        # Maven을 사용하여 프로젝트를 빌드하는 단계입니다.
+
+      - name: Start Tomcat
+        run: /opt/tomcat/latest/bin/startup.sh
+        # Apache Tomcat을 시작하는 단계입니다. Tomcat이 이미 설치되어 있고 실행 가능한 경로를 사용합니다.
+
+      # Optional: Run Tests
+      # - name: Run Tests
+      #  run: mvn test
+      # 단위 테스트를 실행하는 단계입니다. 선택적으로 사용하며, 프로젝트에 테스트가 있을 때 실행됩니다.
